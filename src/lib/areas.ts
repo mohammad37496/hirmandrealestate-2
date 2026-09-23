@@ -77,6 +77,7 @@ export function areaHead(area: AreaInfo | null, slug: string) {
     links: [
       { rel: "canonical", href: url },
       { rel: "alternate", hrefLang: "fa-IR", href: url },
+      { rel: "alternate", hrefLang: "x-default", href: url },
     ],
   };
 }

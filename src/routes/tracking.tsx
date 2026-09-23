@@ -266,8 +266,8 @@ function TrackingPage() {
   }
 
   return (
-    <SiteChrome className="partner-portal-shell">
-      <main className="partner-portal" id="top">
+    <SiteChrome className="partner-portal-shell" skipTo="tracking-main">
+      <main className="partner-portal" id="tracking-main">
         <header className="partner-portal-hero">
           <BrandLogo size="soon" />
           <span className="kicker">باشگاه همکاران هیرمند</span>

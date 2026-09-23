@@ -53,8 +53,8 @@ function ConsultantProfilePage() {
   const data = Route.useLoaderData();
   if (!data.person) {
     return (
-      <SiteChrome>
-        <main className="page-shell">
+      <SiteChrome skipTo="page-main">
+        <main id="page-main" className="page-shell">
           <section className="empty-state">
             <h1>مشاور پیدا نشد</h1>
             <p>پروفایل درخواستی در هیرمند وجود ندارد.</p>
@@ -77,8 +77,8 @@ function ConsultantProfilePage() {
   ];
 
   return (
-    <SiteChrome className="property-detail-shell">
-      <main className="consultant-profile-page">
+    <SiteChrome className="property-detail-shell" skipTo="consultant-main">
+      <main id="consultant-main" className="consultant-profile-page">
         <Link to="/" className="text-link" style={{ marginBottom: 22 }}>
           <ArrowRight size={15} /> بازگشت به سایت هیرمند
         </Link>

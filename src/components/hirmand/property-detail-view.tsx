@@ -485,8 +485,8 @@ export function PropertyDetailView({
 
   if (!property) {
     return (
-      <SiteChrome>
-        <main className="page-shell">
+      <SiteChrome skipTo="page-main">
+        <main id="page-main" className="page-shell">
           <section className="empty-state">
             <h1>فایل پیدا نشد</h1>
             <p>این فایل منتشر نشده یا حذف شده است.</p>
@@ -506,7 +506,7 @@ export function PropertyDetailView({
   ];
 
   return (
-    <SiteChrome>
+    <SiteChrome skipTo="property-main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(propertyJsonLd(property)) }}
@@ -516,7 +516,7 @@ export function PropertyDetailView({
         dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(crumbs)) }}
       />
 
-      <main className="property-detail-page">
+      <main id="property-main" className="property-detail-page">
         <nav className="property-breadcrumb" aria-label="مسیر">
           <Link to="/">خانه</Link>
           <span>/</span>

@@ -75,8 +75,8 @@ function FavoritesPage() {
   }, []);
 
   return (
-    <SiteChrome className="property-detail-shell">
-      <main className="favorites-page">
+    <SiteChrome className="property-detail-shell" skipTo="favorites-main">
+      <main id="favorites-main" className="favorites-page">
         <header className="favorites-head">
           <div>
             <span className="kicker">انتخاب‌های شما</span>

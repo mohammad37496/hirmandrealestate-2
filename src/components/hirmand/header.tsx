@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { NAV, SITE, TEAM } from "@/lib/site";
@@ -10,6 +10,7 @@ import { scrollToId } from "./scroll";
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const locationHash = useRouterState({ select: (s) => s.location.hash });
   const onHome = pathname === "/";
@@ -36,7 +37,8 @@ export function Header() {
     return () => document.body.classList.remove("menu-open");
   }, [menuOpen]);
 
-  // Close the mobile menu with Escape, like any other disclosure.
+  // Close the mobile menu with Escape, like any other disclosure — and return
+  // focus to the toggle so keyboard users are not dropped at <body>.
   useEffect(() => {
     if (!menuOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -44,6 +46,12 @@ export function Header() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen && document.activeElement === document.body) {
+      menuToggleRef.current?.focus();
+    }
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
@@ -109,10 +117,12 @@ export function Header() {
           <CallMenu className="nav-call-menu" buttonClassName="nav-call" align="end" />
 
           <button
+            ref={menuToggleRef}
             type="button"
             className="menu-toggle"
             aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
             aria-expanded={menuOpen}
+            aria-haspopup="dialog"
             onClick={() => setMenuOpen((value) => !value)}
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -120,7 +130,14 @@ export function Header() {
         </div>
       </div>
 
-      <div className={cn("mobile-menu", menuOpen && "is-open")} aria-hidden={!menuOpen} inert={!menuOpen}>
+      <div
+        className={cn("mobile-menu", menuOpen && "is-open")}
+        role="dialog"
+        aria-modal="true"
+        aria-label="منوی اصلی"
+        aria-hidden={!menuOpen}
+        inert={!menuOpen}
+      >
         {NAV.map((item) =>
           item.to === "/properties" ? (
             <Link key={item.id} to="/properties" onClick={closeMenu}>
