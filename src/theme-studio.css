@@ -964,3 +964,22 @@ body{
     transition-duration:.01ms!important;
   }
 }
+
+@media (max-width:1080px){
+  .mobile-theme-switcher{
+    width:100%;
+    min-height:48px;
+    justify-content:center;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin:4px 0 8px;
+    border-radius:14px;
+    color:var(--studio-text-2);
+  }
+  .mobile-theme-switcher small{
+    margin-inline-start:auto;
+    color:var(--studio-muted);
+    font-size:.7rem;
+  }
+}
