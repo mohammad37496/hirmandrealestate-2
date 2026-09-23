@@ -11,8 +11,9 @@
       restrained system: deep emerald structure, charcoal surfaces,
       refined gold accents on warm paper.
    2. Persian typography: no negative letter-spacing (breaks cursive
-      joining), Vazirmatn weight capped at its real 800, comfortable
-      line-heights, tabular Persian digits for figures.
+      joining), Vazirmatn weight capped at its real 800 — requests above it
+      (900) render as a synthesised smear because no such face ships —
+      comfortable line-heights, tabular Persian digits for figures.
    3. RTL hardening: logical properties only in the patches below, fixed
       detail-page reading order, bidi isolation for mixed digits.
    4. Accessibility: visible focus ring, 44px touch targets, global
@@ -153,6 +154,28 @@ h4,
   font-weight: 800;
 }
 
+/* Synthetic-bold cap, site-wide. Several layers still request font-weight:
+   900 (home-desktop, ui-clarity !important, theme-pro) but no 900 face is
+   loaded, so browsers paint a smeared approximation over joined Persian
+   glyphs. font-synthesis-weight: none makes modern browsers fall back to the
+   real 800 face instead; the element caps below cover browsers without
+   support. Buttons/labels are deliberately not force-set to 800 so their
+   400–700 defaults stay untouched. */
+body {
+  font-synthesis-weight: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong {
+  font-weight: 800;
+}
+
 /* Heading rhythm: Persian needs taller lines than Latin. These are paired
    with specificity so they beat home-desktop.css's display-scale 1.03/1.2. */
 .hero h1,
@@ -192,12 +215,17 @@ li {
   font-feature-settings: "ss02" on; /* Vazirmatn: circled/tabular digits */
 }
 
-/* Mixed-content bidi safety: phone numbers and Latin codes inside RTL text
-   must not re-order surrounding punctuation. */
+/* Mixed-content bidi safety: phone numbers, prices, Latin codes and percent
+   tokens inside RTL text must not re-order surrounding punctuation. */
 [dir="rtl"] .property-contact-phone,
 [dir="rtl"] .team-phone,
 [dir="rtl"] .footer-contact-card strong[dir="ltr"],
-[dir="rtl"] .property-card-code {
+[dir="rtl"] .property-card-code,
+[dir="rtl"] .property-card-price,
+[dir="rtl"] .property-price-block strong,
+[dir="rtl"] .pf-map-item small,
+[dir="rtl"] .property-badge-discount,
+[dir="rtl"] .budget-usage-percent {
   unicode-bidi: isolate;
 }
 
@@ -249,8 +277,11 @@ textarea {
   border-radius: 6px;
 }
 
-/* Minimum comfortable touch targets for compact controls */
+/* Minimum comfortable touch targets for compact controls. The home-desktop
+   and ui-clarity layers declare their own min-heights (34/38px) for some of
+   these — !important is required to win the cascade here. */
 .hero-intent,
+.site-home .hero-intent,
 .chip,
 .copy-btn,
 .team-social,
@@ -261,12 +292,13 @@ textarea {
 
 @media (max-width: 767px) {
   .hero-intent,
+  .site-home .hero-intent,
   .chip,
   .copy-btn,
   .team-social,
   .footer-social-chip,
   .property-filter-button {
-    min-height: 44px;
+    min-height: 44px !important;
   }
 }
 
@@ -1366,8 +1398,8 @@ textarea {
     linear-gradient(180deg, rgba(255,255,255,.022), transparent 34%),
     var(--detail-surface) !important;
   box-shadow:
-    0 16px 40px rgba(0,0,0,.16) !important,
-    inset 0 1px 0 rgba(255,255,255,.02);
+    0 16px 40px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.02) !important;
 }
 
 .property-divar-specs {

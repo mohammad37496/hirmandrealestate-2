@@ -30,15 +30,17 @@ function AreaPage() {
 
   if (!area) {
     return (
-      <SiteChrome className="property-detail-shell">
-        <section className="property-not-found">
-          <MapPinned size={32} />
-          <h1>این محله پیدا نشد</h1>
-          <p>محله درخواستی در فهرست مناطق تحت پوشش هیرمند نیست.</p>
-          <Link to="/" hash="areas" className="btn-gold">
-            مشاهده محله‌ها
-          </Link>
-        </section>
+      <SiteChrome className="property-detail-shell" skipTo="area-main">
+        <main id="area-main">
+          <section className="property-not-found">
+            <MapPinned size={32} />
+            <h1>این محله پیدا نشد</h1>
+            <p>محله درخواستی در فهرست مناطق تحت پوشش هیرمند نیست.</p>
+            <Link to="/" hash="areas" className="btn-gold">
+              مشاهده محله‌ها
+            </Link>
+          </section>
+        </main>
       </SiteChrome>
     );
   }
@@ -56,7 +58,7 @@ function AreaPage() {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${area.lat},${area.lng}`;
 
   return (
-    <SiteChrome className="property-detail-shell">
+    <SiteChrome className="property-detail-shell" skipTo="area-main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdScript(areaJsonLd(area)) }}
@@ -66,7 +68,7 @@ function AreaPage() {
         dangerouslySetInnerHTML={{ __html: jsonLdScript(crumbs) }}
       />
 
-      <main className="property-detail">
+      <main id="area-main" className="property-detail">
         <nav
           aria-label="مسیر صفحه"
           style={{

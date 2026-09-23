@@ -752,11 +752,11 @@ export function SitePage({ initialProperties = [] }: { initialProperties?: Prope
   }
 
   return (
-    <SiteChrome>
+    <SiteChrome skipTo="site-main">
       {/* Order matters: people arrive looking for properties, so the live
           listings come straight after the hero, and the softer brand material
           (about, team, partner club) sits below the decision content. */}
-      <main className="site-home">
+      <main id="site-main" className="site-home">
         <Hero />
         <TrustStrip />
         <PropertyShowcase initialProperties={initialProperties} />

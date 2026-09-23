@@ -91,8 +91,8 @@ function ComparePage() {
   }
 
   return (
-    <SiteChrome className="property-detail-shell">
-      <main className="compare-page">
+    <SiteChrome className="property-detail-shell" skipTo="compare-main">
+      <main id="compare-main" className="compare-page">
         <header className="favorites-head">
           <div>
             <span className="kicker">انتخاب هوشمند</span>

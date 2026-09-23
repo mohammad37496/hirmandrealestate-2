@@ -43,7 +43,7 @@ export function SiteChrome({
           <span>فایل‌ها</span>
         </Link>
         <Link to="/" hash="inquiry" className="quick-action quick-action-primary" onClick={() => trackAnalyticsEvent("inquiry_click")}>
-          <FileKey size={17} />
+          <MessageCircle size={17} />
           <span>درخواست ملک</span>
         </Link>
         <a

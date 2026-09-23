@@ -18,10 +18,10 @@ export function BrandLogo({
       alt="لوگوی گروه مشاورین املاک هیرمند"
       width={1457}
       height={1079}
-      draggable={false}
-      decoding="async"
       loading={isHero ? "eager" : "lazy"}
       fetchPriority={isHero ? "high" : "auto"}
+      draggable={false}
+      decoding="async"
       className={cn("brand-logo", `brand-logo-${size}`, className)}
     />
   );

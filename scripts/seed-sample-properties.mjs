@@ -37,10 +37,6 @@ for (const key of ["DATABASE_URL", "POSTGRES_URL", "NEON_DATABASE_URL"]) {
   }
 }
 
-// Mirror the slug bookkeeping src/lib/db.ts applies to the dev server's own
-// PGlite instance so both share one on-disk store.
-await import("idb-keyval").catch(() => {});
-
 const { PGlite } = await import("@electric-sql/pglite");
 const pg = new PGlite({ dataDir: dataDir });
 await pg.waitReady;
