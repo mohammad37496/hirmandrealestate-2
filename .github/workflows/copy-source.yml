@@ -1,6 +1,7 @@
 name: Copy source repository snapshot
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
