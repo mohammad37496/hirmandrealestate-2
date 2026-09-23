@@ -217,6 +217,52 @@ try {
     await apiPage.close();
   }
 
+
+  const adminPropertyCrudCheck = { attempted: false, ok: true, title: null, publicVisible: false, error: null };
+  const adminPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  try {
+    const adminUrl = new URL("/admin", url).toString();
+    await adminPage.goto(adminUrl, { waitUntil: "domcontentloaded", timeout: timeoutMs });
+    await adminPage.getByPlaceholder("HIRMAND_ADMIN_KEY").fill(process.env.HIRMAND_ADMIN_KEY || "");
+    await adminPage.getByRole("button", { name: "ورود" }).click();
+    await adminPage.getByRole("button", { name: "فایل جدید" }).click();
+    const testTitle = "تست خودکار هیرمند — " + new Date().toISOString().slice(0, 10);
+    adminPropertyCrudCheck.attempted = true;
+    adminPropertyCrudCheck.title = testTitle;
+
+    const field = (labelText) =>
+      adminPage.locator("label.field").filter({ hasText: labelText }).locator("input, textarea, select").first();
+
+    await field("عنوان").fill(testTitle);
+    await field("محله").fill("سیمین");
+    await field("آدرس").fill("سه راه سیمین — تست خودکار");
+    await field("توضیحات").fill("این فایل برای تست خودکار پنل مدیریت ساخته شده است و داده واقعی مشتری نیست.");
+    await field("قیمت فروش").fill("5000000000");
+    await adminPage.locator("form.admin-form-wrap button[type=submit]").click();
+    await adminPage.getByText(testTitle, { exact: true }).waitFor({ state: "visible", timeout: timeoutMs });
+
+    const publicPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+    try {
+      await publicPage.goto(new URL("/properties", url).toString(), { waitUntil: "domcontentloaded", timeout: timeoutMs });
+      await publicPage.waitForTimeout(500);
+      adminPropertyCrudCheck.publicVisible = (await publicPage.getByText(testTitle, { exact: true }).count()) > 0;
+    } finally {
+      await publicPage.close();
+    }
+    adminPropertyCrudCheck.ok = adminPropertyCrudCheck.publicVisible;
+  } catch (error) {
+    adminPropertyCrudCheck.ok = false;
+    adminPropertyCrudCheck.error = String(error?.message || error);
+  } finally {
+    await adminPage.close();
+  }
+
+  const seoRouteChecks = [];
+  for (const path of ["/robots.txt", "/sitemap.xml"]) {
+    const response = await browser.request.get(new URL(path, url).toString(), { timeout: timeoutMs });
+    seoRouteChecks.push({ path, status: response.status(), ok: response.ok() });
+  }
+
   // When published listings exist, exercise a real card-to-detail navigation.
   // This is the regression test for the recurring "clicking a file does nothing" bug.
   const propertyNavigationCheck = { attempted: false, ok: true, href: null, status: null, bodyTextLen: 0, error: null };
@@ -268,6 +314,17 @@ try {
         : "property detail navigation smoke skipped: no published property card is available in this environment",
     );
   }
+  if (!adminPropertyCrudCheck.ok) {
+    viewports.desktop.pageErrors.push(
+      `admin property CRUD smoke failed: ${adminPropertyCrudCheck.error || "test property was not visible publicly"}`,
+    );
+  }
+  const seoRouteFailures = seoRouteChecks.filter((item) => !item.ok);
+  if (seoRouteFailures.length) {
+    viewports.desktop.pageErrors.push(
+      ...seoRouteFailures.map((item) => `SEO route smoke failed: ${item.path} [${item.status}]`),
+    );
+  }
 
   const brandWarnings = computeBrandWarnings({
     hasCanvas: viewports.desktop.hasCanvas,
@@ -281,7 +338,7 @@ try {
       buildAuthEnabled: buildAuthEnabled(),
     }),
   );
-  const verdict = { url, viewports, routeChecks, propertyNavigationCheck, musicApiCheck, brandWarnings, authWarnings, verdictFile: outJson };
+  const verdict = { url, viewports, routeChecks, propertyNavigationCheck, adminPropertyCrudCheck, musicApiCheck, seoRouteChecks, brandWarnings, authWarnings, verdictFile: outJson };
   if (baselineRequested) {
     const { divergesFromBaseline, reasons } = compareAgainstBaseline(verdict);
     verdict.divergesFromBaseline = divergesFromBaseline;
