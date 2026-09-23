@@ -11,6 +11,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const menuWasOpen = useRef(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const locationHash = useRouterState({ select: (s) => s.location.hash });
   const onHome = pathname === "/";
@@ -48,8 +49,17 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
+  // Restore focus to the toggle only after a real close (keyboard users who
+  // dismissed with Escape are not dropped at <body>). The was-open guard stops
+  // the first mount from yanking focus into the hidden mobile menu button.
   useEffect(() => {
-    if (!menuOpen && document.activeElement === document.body) {
+    if (menuOpen) {
+      menuWasOpen.current = true;
+      return;
+    }
+    if (!menuWasOpen.current) return;
+    menuWasOpen.current = false;
+    if (document.activeElement === document.body) {
       menuToggleRef.current?.focus();
     }
   }, [menuOpen]);
