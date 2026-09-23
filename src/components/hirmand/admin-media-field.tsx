@@ -148,7 +148,7 @@ export function AdminMediaField({ value, onChange }: Props) {
       "image/png",
       "image/webp",
       "image/gif",
-      "image/svg+xml",
+      "image/avif",
       "video/mp4",
       "video/webm",
       "video/quicktime",
@@ -235,7 +235,7 @@ export function AdminMediaField({ value, onChange }: Props) {
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/quicktime"
+          accept="image/jpeg,image/png,image/webp,image/gif,image/avif,video/mp4,video/webm,video/quicktime"
           multiple
           hidden
           onChange={onPick}
@@ -250,7 +250,7 @@ export function AdminMediaField({ value, onChange }: Props) {
             <Upload size={22} />
             <strong>آپلود از گالری یا کامپیوتر</strong>
             <span>تصویر یا ویدیو را بکشید و رها کنید · یا کلیک کنید</span>
-            <small>jpg / png / webp / gif / svg / mp4 / webm · تصاویر به WebP و حداکثر ۲۵۶۰px بهینه می‌شوند · حداکثر ۲۵ مگابایت · تا ۲۰ فایل</small>
+            <small>jpg / png / webp / gif / avif / mp4 / webm · تصاویر به WebP و حداکثر ۲۵۶۰px بهینه می‌شوند · حداکثر ۲۵ مگابایت · تا ۲۰ فایل</small>
           </>
         )}
       </div>
