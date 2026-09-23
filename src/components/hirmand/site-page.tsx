@@ -168,7 +168,7 @@ function Hero() {
       <div className="hero-inner">
         <div className="hero-main-copy">
           <div className="hero-brand-line">
-            <BrandLogo size="hero" />
+            <img className="hero-brand-logo" src="/images/hirmand-logo-square.png" alt="لوگوی هیرمند" width={68} height={68} decoding="async" />
             <span className="hero-eyebrow">املاک تخصصی اصفهان · از خانه تا سرمایه</span>
           </div>
           <p className="hero-kicker">{SITE.kicker}</p>
