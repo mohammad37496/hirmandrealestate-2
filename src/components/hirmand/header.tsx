@@ -1,18 +1,15 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, Palette, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { NAV, SITE, TEAM } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { CallMenu } from "./call-menu";
 import { BrandLogo } from "./logo";
 import { scrollToId } from "./scroll";
 
-type ThemeMode = "nocturne" | "ivory" | "forest";
-
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<ThemeMode>("nocturne");
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const onHome = pathname === "/";
 
@@ -23,18 +20,12 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // The refined theme ships a single polished "day" palette; retire the
+  // legacy multi-theme attribute so the unified token set always wins.
   useEffect(() => {
-    const saved = window.localStorage.getItem("hirmand-theme");
-    const next: ThemeMode =
-      saved === "ivory" || saved === "forest" || saved === "nocturne" ? saved : "nocturne";
-    setTheme(next);
-    document.documentElement.dataset.theme = next;
+    document.documentElement.removeAttribute("data-theme");
+    window.localStorage.removeItem("hirmand-theme");
   }, []);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem("hirmand-theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     document.body.classList.toggle("menu-open", menuOpen);
@@ -42,15 +33,6 @@ export function Header() {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
-
-  const cycleTheme = () => {
-    setTheme((current) =>
-      current === "nocturne" ? "ivory" : current === "ivory" ? "forest" : "nocturne",
-    );
-  };
-
-  const themeLabel =
-    theme === "nocturne" ? "تم شبانه" : theme === "ivory" ? "تم روشن" : "تم جنگلی";
 
   function goHash(event: MouseEvent<HTMLAnchorElement>, id: string) {
     if (onHome) {
@@ -91,17 +73,6 @@ export function Header() {
         </nav>
 
         <div className="nav-actions">
-          <button
-            type="button"
-            className="theme-switcher"
-            onClick={cycleTheme}
-            aria-label={"تغییر تم؛ " + themeLabel}
-            title={"تغییر تم؛ " + themeLabel}
-          >
-            <Palette size={18} strokeWidth={1.8} aria-hidden="true" />
-            <span className="theme-switcher-label">{themeLabel}</span>
-          </button>
-
           <Link
             to="/"
             hash="inquiry"
@@ -140,11 +111,17 @@ export function Header() {
             </Link>
           ),
         )}
-        <button type="button" className="theme-switcher mobile-theme-switcher" onClick={cycleTheme}>
-          <Palette size={17} strokeWidth={1.8} />
-          <span>{themeLabel}</span>
-          <small>تغییر</small>
-        </button>
+        <Link
+          to="/"
+          hash="inquiry"
+          className="mobile-call mobile-request"
+          onClick={(event) => {
+            if (onHome) scrollToId(event, "inquiry", closeMenu);
+            else closeMenu();
+          }}
+        >
+          درخواست ملک
+        </Link>
         <div className="mobile-call-list">
           {TEAM.map((person) => (
             <a

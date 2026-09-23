@@ -1,0 +1,549 @@
+/* ==========================================================================
+   HIRMAND — theme-refined (professional redesign layer)
+   --------------------------------------------------------------------------
+   Loaded LAST: the single authoritative visual layer.
+
+   Design language — "Estate Editorial"
+   • Warm paper surfaces (ivory) instead of pure white
+   • Deep slate-charcoal as the structural anchor (header CTA, footer, chips)
+   • Brass reserved for accents: kickers, prices, links, underlines
+   • Flat editorial cards with hairline borders; shadow appears on hover only
+   • One radius family, two shadows, restrained motion
+
+   How it works
+   ------------
+   1. Token remap: the legacy tokens (--v2-*, --paper, --gold…) are re-pointed
+      here, so every earlier layer automatically inherits the new palette.
+   2. The 3 theme variants of theme-studio are retired; the header renders a
+      single "day" theme and no longer sets html[data-theme].
+   3. Structural polish for nav / hero / cards / footer.
+   4. Late overrides for the handful of legacy hex values that predate tokens.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Token remap
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paper */
+  --paper: #f3f0ea;
+  --paper-2: #eae5db;
+  --card: #fcfaf5;
+  --card-2: #f5f1e9;
+
+  /* Ink */
+  --fg: #1b2530;
+  --muted: #5a6572;
+  --subtle: #6e7883;
+  --faint: #97a0aa;
+
+  /* Slate anchor (structure: primary buttons, footer, active chips) */
+  --anchor: #232d3a;
+  --anchor-2: #2d3948;
+  --anchor-deep: #161d26;
+
+  /* Brass (accent only) */
+  --brass-900: #5f3f0c;
+  --brass-800: #6f4a0f;
+  --brass-700: #8a5e14;
+  --brass-600: #a8761f;
+  --brass-500: #c08a2a;
+  --brass-300: #e2c48c;
+  --brass-100: #f7edda;
+
+  /* Lines */
+  --line: #e5dfd3;
+  --line-2: #d5cdbd;
+  --line-strong: #d5cdbd;
+
+  /* Semantic */
+  --ok: #1c7a56;
+  --warn: #8a5e14;
+  --danger: #a33127;
+  --info: #1b5b85;
+
+  /* Legacy aliases */
+  --bg: var(--paper);
+  --surface: var(--card);
+  --surface-2: var(--card-2);
+  --gold: var(--brass-700);
+  --gold-soft: var(--brass-500);
+  --gold-line: rgb(138 94 20 / 28%);
+  --ink: #ffffff;
+  --navy-900: var(--anchor);
+  --navy-800: var(--anchor-2);
+  --navy-700: var(--anchor-2);
+
+  /* Elevation — warmer, quieter */
+  --el-1: 0 1px 2px rgb(27 37 48 / 4%), 0 2px 6px rgb(27 37 48 / 4%);
+  --el-2: 0 2px 6px rgb(27 37 48 / 5%), 0 16px 36px rgb(27 37 48 / 9%);
+  --el-3: 0 12px 28px rgb(27 37 48 / 9%), 0 40px 80px rgb(27 37 48 / 13%);
+  --el-brass: 0 10px 24px rgb(138 94 20 / 20%);
+  --shadow: var(--el-2);
+  --shadow-soft: var(--el-1);
+  --shadow-strong: var(--el-2);
+
+  /* theme-studio v2 tokens — re-pointed to the refined palette.
+     --v2-moss (was green, used as the action color) becomes slate anchor;
+     --v2-copper stays brass. This recolors every v2-styled control at once. */
+  --v2-ink: #1b2530;
+  --v2-paper: #f3f0ea;
+  --v2-paper-2: #eae5db;
+  --v2-card: #fcfaf5;
+  --v2-moss: var(--anchor);
+  --v2-moss-2: var(--anchor-2);
+  --v2-copper: var(--brass-600);
+  --v2-copper-2: var(--brass-700);
+  --v2-line: var(--line);
+  --v2-muted: var(--muted);
+  --v2-soft: var(--subtle);
+  --v2-dark: var(--anchor);
+  --v2-dark-2: var(--anchor-2);
+  --v2-shadow: 0 20px 56px rgb(27 37 48 / 10%);
+  --v2-shadow-sm: 0 10px 28px rgb(27 37 48 / 7%);
+
+  color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base polish
+   -------------------------------------------------------------------------- */
+html {
+  scrollbar-color: rgb(35 45 58 / 30%) transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(35 45 58 / 28%);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(35 45 58 / 42%);
+}
+
+::selection {
+  background: var(--anchor);
+  color: #fff;
+}
+
+/* Persian display type: keep tracking near-neutral and lines breathable. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.01em !important;
+}
+
+.section-head h2 {
+  font-size: clamp(1.7rem, 1.25rem + 1.4vw, 2.55rem);
+  line-height: 1.28;
+}
+
+.kicker,
+.hero-kicker {
+  color: var(--brass-700);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.hero .kicker,
+.hero-kicker {
+  color: var(--brass-300);
+}
+
+/* --------------------------------------------------------------------------
+   3. Buttons — slate primary, quiet ghost
+   -------------------------------------------------------------------------- */
+.btn-gold,
+.btn-ghost {
+  border-radius: 12px;
+}
+
+.btn-gold {
+  color: #fff;
+  background: var(--anchor);
+  box-shadow: 0 10px 22px rgb(35 45 58 / 20%);
+}
+
+.btn-gold:hover {
+  background: var(--anchor-2);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: var(--card);
+  border-color: var(--line-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--brass-500);
+  background: var(--brass-100);
+}
+
+.text-link {
+  color: var(--brass-700);
+}
+
+.text-link:hover {
+  color: var(--brass-800);
+}
+
+/* --------------------------------------------------------------------------
+   4. Header — paper glass + slim dark announcement strip
+   -------------------------------------------------------------------------- */
+.site-nav,
+.site-nav.is-scrolled {
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.site-nav::before {
+  content: "اصفهان  •  مشاوره مستقیم  •  فایل‌های منتخب هیرمند";
+  background: var(--anchor);
+  color: rgb(226 196 140 / 88%);
+  border-bottom-color: rgb(255 255 255 / 7%);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.nav-brand strong {
+  color: var(--fg);
+}
+
+.nav-links {
+  gap: 4px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.nav-links a {
+  color: var(--muted);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.nav-links a:hover {
+  color: var(--fg);
+  background: var(--paper-2);
+}
+
+.nav-links a.is-current {
+  color: var(--fg);
+  background: var(--paper-2);
+  box-shadow: inset 0 -2px 0 var(--brass-500);
+}
+
+.header-inquiry,
+.nav-call {
+  border-radius: 10px;
+}
+
+.menu-toggle {
+  background: var(--card);
+  border-color: var(--line);
+  color: var(--fg);
+}
+
+/* --------------------------------------------------------------------------
+   5. Hero — slate stage, editorial inset image
+   -------------------------------------------------------------------------- */
+.hero {
+  background:
+    radial-gradient(720px 340px at 86% -4%, rgb(192 138 42 / 16%), transparent 62%),
+    linear-gradient(158deg, var(--anchor) 0%, var(--anchor-2) 58%, #344154 100%);
+}
+
+.hero-media {
+  border-radius: 24px;
+  box-shadow: 0 26px 70px rgb(10 15 21 / 35%);
+}
+
+.hero-media img {
+  filter: saturate(0.8) contrast(1.06) brightness(0.78);
+}
+
+.hero h1 {
+  color: #f7f4ee;
+  letter-spacing: -0.01em !important;
+  line-height: 1.22;
+}
+
+.english-name {
+  color: var(--brass-300);
+  letter-spacing: 0.32em;
+}
+
+.hero-managed {
+  color: var(--brass-300);
+  background: rgb(255 255 255 / 6%);
+  border-color: rgb(226 196 140 / 30%);
+  border-radius: 999px;
+}
+
+.hero-search {
+  border-radius: 18px;
+  background: rgb(13 18 25 / 55%);
+  border-color: rgb(255 255 255 / 14%);
+  box-shadow: 0 24px 54px rgb(8 12 18 / 32%);
+  backdrop-filter: blur(20px);
+}
+
+.hero-search select {
+  border-radius: 12px;
+  background: rgb(255 255 255 / 5%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.hero-search .search-submit {
+  background: linear-gradient(160deg, var(--brass-600), var(--brass-800));
+  box-shadow: 0 12px 26px rgb(138 94 20 / 35%);
+}
+
+.hero-intent:hover {
+  border-color: rgb(226 196 140 / 42%);
+  background: rgb(192 138 42 / 12%);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   6. Cards — flat editorial, lift on hover
+   -------------------------------------------------------------------------- */
+.property-card,
+.service-card,
+.step-card,
+.team-card,
+.type-card,
+.principle-card,
+.contact-card,
+.social-link,
+.faq-item {
+  border-radius: 18px !important;
+}
+
+.property-card:hover,
+.service-card:hover,
+.step-card:hover,
+.team-card:hover,
+.type-card:hover,
+.contact-card:hover,
+.social-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--el-2) !important;
+}
+
+.property-card h3 {
+  line-height: 1.7;
+}
+
+.property-card-price {
+  color: var(--brass-700);
+}
+
+.property-card-code {
+  letter-spacing: 0.06em;
+}
+
+.property-card-actions {
+  background: transparent;
+}
+
+.step-num {
+  color: var(--brass-700);
+  letter-spacing: 0.14em;
+}
+
+.team-avatar {
+  color: var(--brass-700);
+  background: var(--brass-100);
+  border-color: rgb(138 94 20 / 16%);
+}
+
+.faq-item summary span {
+  color: var(--brass-700);
+  border-color: rgb(138 94 20 / 24%);
+  background: var(--brass-100);
+}
+
+/* Services: the card IS the button on desktop (no double padding). */
+@media (min-width: 721px) {
+  .service-card {
+    padding: 0 !important;
+  }
+
+  .service-card .service-card-button {
+    padding: 22px 20px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Forms & focus
+   -------------------------------------------------------------------------- */
+.field input,
+.field select,
+.field textarea {
+  border-radius: 10px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--brass-500);
+  box-shadow: 0 0 0 3px rgb(192 138 42 / 14%);
+}
+
+.inquiry-section {
+  border-radius: 24px !important;
+  background:
+    radial-gradient(620px 220px at 88% 0%, rgb(138 94 20 / 7%), transparent 70%),
+    var(--card) !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. Footer — slate anchor with editorial top radius
+   -------------------------------------------------------------------------- */
+.footer {
+  margin-top: 96px;
+  padding: 54px 0 20px;
+  border-top: 0;
+  border-radius: 28px 28px 0 0;
+  background: linear-gradient(180deg, var(--anchor), var(--anchor-deep));
+  color: rgb(226 230 236 / 68%);
+}
+
+.footer h3 {
+  color: #f5f2ea;
+}
+
+.footer-brand p,
+.footer-managed {
+  color: rgb(226 230 236 / 62%);
+}
+
+.footer-index {
+  color: var(--brass-300);
+}
+
+.footer-label {
+  color: rgb(255 255 255 / 88%);
+}
+
+.footer-links a,
+.footer-contact > a,
+.footer-contact > span {
+  color: rgb(226 230 236 / 72%);
+  background: rgb(255 255 255 / 4%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.footer-links a:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 8%);
+  border-color: rgb(226 196 140 / 35%);
+}
+
+.footer-contact svg {
+  color: var(--brass-300);
+}
+
+.footer-social-chip {
+  color: var(--brass-300);
+  background: rgb(255 255 255 / 5%);
+  border-color: rgb(255 255 255 / 12%);
+}
+
+.footer-social-chip:hover {
+  background: rgb(226 196 140 / 14%);
+  border-color: rgb(226 196 140 / 40%);
+}
+
+.footer-bottom {
+  border-top-color: rgb(255 255 255 / 9%);
+  color: rgb(226 230 236 / 46%);
+}
+
+.footer-back-top {
+  color: var(--brass-300);
+}
+
+/* --------------------------------------------------------------------------
+   9. Floating chrome
+   -------------------------------------------------------------------------- */
+.quick-actions {
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  border-color: var(--line);
+  box-shadow: 0 18px 44px rgb(12 17 24 / 22%);
+}
+
+.quick-action {
+  border-radius: 10px;
+}
+
+.floating-call {
+  border-radius: 12px;
+  background: var(--anchor);
+}
+
+/* --------------------------------------------------------------------------
+   10. Theme switcher retirement (single refined "day" theme)
+   -------------------------------------------------------------------------- */
+.theme-switcher,
+.mobile-theme-switcher {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. Late overrides — last legacy hex values in ui-clarity (mobile block)
+   -------------------------------------------------------------------------- */
+.site-home .trust-stat strong {
+  color: var(--fg) !important;
+}
+
+@media (max-width: 720px) {
+  .site-home .trust-stat {
+    border-color: var(--line) !important;
+    background: var(--surface-2) !important;
+  }
+
+  .site-home .trust-stat strong {
+    color: var(--fg) !important;
+  }
+
+  .site-home .trust-stat span {
+    color: var(--muted) !important;
+  }
+
+  .site-home .section-head p {
+    color: var(--muted) !important;
+  }
+
+  .site-home .property-card-meta span {
+    background: var(--ui-tint, var(--paper-2)) !important;
+    border-color: var(--line) !important;
+  }
+
+  .site-home .property-card-footer {
+    border-top-color: var(--line) !important;
+  }
+
+  .site-home .property-card-actions {
+    background: var(--card) !important;
+    border-top-color: var(--line) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Motion discipline
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
