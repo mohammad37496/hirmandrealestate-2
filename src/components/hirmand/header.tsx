@@ -1,6 +1,6 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, Palette, X } from "lucide-react";
 import { NAV, SITE, TEAM } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { CallMenu } from "./call-menu";
@@ -10,6 +10,7 @@ import { scrollToId } from "./scroll";
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<"nocturne" | "ivory" | "forest">("nocturne");
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const onHome = pathname === "/";
 
@@ -25,7 +26,7 @@ export function Header() {
     return () => document.body.classList.remove("menu-open");
   }, [menuOpen]);
 
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => setMenuOpen(false);\n\n  const cycleTheme = () => {\n    setTheme((current) => (current === "nocturne" ? "ivory" : current === "ivory" ? "forest" : "nocturne"));\n  };\n\n  const themeLabel = theme === "nocturne" ? "تم شبانه" : theme === "ivory" ? "تم روشن" : "تم جنگلی";
 
   function goHash(event: MouseEvent<HTMLAnchorElement>, id: string) {
     if (onHome) {
