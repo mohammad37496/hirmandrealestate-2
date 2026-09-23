@@ -39,6 +39,7 @@ export function InquiryForm({ draft }: { draft: InquiryDraft }) {
   const [consultant, setConsultant] = useState<(typeof TEAM)[number]["id"]>(TEAM[0].id);
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (draft.deal) setDeal(draft.deal);
@@ -78,6 +79,7 @@ export function InquiryForm({ draft }: { draft: InquiryDraft }) {
       return;
     }
     setError("");
+    setSubmitting(true);
     const payload = {
       name: name.trim(),
       phone: normalizePhone(phone),
@@ -109,9 +111,14 @@ export function InquiryForm({ draft }: { draft: InquiryDraft }) {
       }
       trackAnalyticsEvent("inquiry_submit");
       toast.success("درخواست شما با موفقیت برای تیم هیرمند ثبت شد.");
+      setName("");
+      setPhone("");
+      setNote("");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "ثبت درخواست انجام نشد.");
       return;
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -128,6 +135,7 @@ export function InquiryForm({ draft }: { draft: InquiryDraft }) {
           value={name}
           onChange={(event) => setName(event.target.value)}
           placeholder="مثلاً علی رضایی"
+          aria-invalid={Boolean(error && !name.trim()) || undefined}
         />
       </div>
       <div className="field">
@@ -140,8 +148,9 @@ export function InquiryForm({ draft }: { draft: InquiryDraft }) {
           autoComplete="tel"
           value={phone}
           onChange={(event) => setPhone(event.target.value)}
-          placeholder="0913 000 0000"
+          placeholder="۰۹۱۳ ۰۰۰ ۰۰۰۰"
           aria-describedby="inq-phone-hint"
+          aria-invalid={Boolean(error && !isMobile(phone)) || undefined}
         />
       </div>
       <p id="inq-phone-hint" className="form-hint field-span">
@@ -218,8 +227,8 @@ export function InquiryForm({ draft }: { draft: InquiryDraft }) {
         </p>
       ) : null}
       <div className="form-actions">
-        <button type="submit" className="btn-gold">
-          ثبت درخواست
+        <button type="submit" className="btn-gold" disabled={submitting}>
+          {submitting ? "در حال ثبت…" : "ثبت درخواست"}
         </button>
         <a
           className={cn("btn-ghost")}

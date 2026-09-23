@@ -106,6 +106,7 @@ export const Route = createFileRoute("/properties")({
       links: [
         { rel: "canonical", href: url },
         { rel: "alternate", hrefLang: "fa-IR", href: url },
+        { rel: "alternate", hrefLang: "x-default", href: url },
       ],
     };
   },
@@ -218,9 +219,12 @@ function PropertiesIndexPage() {
   const queryCache = useRef(new Map<string, { rows: typeof initial.properties; count: number }>());
   const loadMoreSentinel = useRef<HTMLDivElement | null>(null);
 
+  // Eagerly hydrate filters from the URL once; afterwards skip the first
+  // filter-triggered fetch so a fresh visit doesn't re-query the loader data.
   useEffect(() => {
     setSavedSearches(readSavedSearches());
     const params = new URLSearchParams(window.location.search);
+    const hasParams = Array.from(params.keys()).length > 0;
     const tx = validTransaction(params.get("transaction") ?? "");
     const type = validPropertyType(params.get("type") ?? "");
     const sortParam = params.get("sort");
@@ -244,7 +248,7 @@ function PropertiesIndexPage() {
     setParkingOnly(params.get("parking") === "1");
     setElevatorOnly(params.get("elevator") === "1");
     setSort(validSort);
-    skipInitialFetch.current = Array.from(params.keys()).length === 0;
+    skipInitialFetch.current = !hasParams;
     setUrlReady(true);
   }, []);
 
@@ -604,8 +608,8 @@ function PropertiesIndexPage() {
   const fa = (value: number) => value.toLocaleString("fa-IR");
 
   return (
-    <SiteChrome>
-      <main className="page-shell pf-page">
+    <SiteChrome skipTo="properties-main">
+      <main id="properties-main" className="page-shell pf-page">
         <header className="pf-hero">
           <span className="pf-kicker">فایل‌های هیرمند</span>
           <div className="pf-hero-row">

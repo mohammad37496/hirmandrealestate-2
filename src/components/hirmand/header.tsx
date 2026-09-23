@@ -11,7 +11,11 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const locationHash = useRouterState({ select: (s) => s.location.hash });
   const onHome = pathname === "/";
+  // Active state for in-page section links (e.g. /#services) so the desktop
+  // nav reflects where the visitor actually is on the homepage.
+  const hashActive = typeof locationHash === "string" ? locationHash : "";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -30,6 +34,16 @@ export function Header() {
   useEffect(() => {
     document.body.classList.toggle("menu-open", menuOpen);
     return () => document.body.classList.remove("menu-open");
+  }, [menuOpen]);
+
+  // Close the mobile menu with Escape, like any other disclosure.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
@@ -60,12 +74,19 @@ export function Header() {
                 key={item.id}
                 to="/properties"
                 className={cn(pathname === "/properties" && "is-current")}
+                aria-current={pathname === "/properties" ? "page" : undefined}
                 onClick={closeMenu}
               >
                 {item.label}
               </Link>
             ) : (
-              <Link key={item.id} to="/" hash={item.hash} onClick={(event) => goHash(event, item.hash)}>
+              <Link
+                key={item.id}
+                to="/"
+                hash={item.hash}
+                className={cn(onHome && hashActive === item.hash && "is-current")}
+                onClick={(event) => goHash(event, item.hash)}
+              >
                 {item.label}
               </Link>
             ),

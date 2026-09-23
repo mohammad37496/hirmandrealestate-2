@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, MapPinned, Phone } from "lucide-react";
 import { listPublishedProperties } from "@/lib/properties";
 import { findAreaBySlug, areaHead, areaJsonLd, areaPath, allAreas } from "@/lib/areas";
-import { breadcrumbJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, jsonLdScript } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { SiteChrome } from "@/components/hirmand/site-chrome";
 import { PropertyCard } from "@/components/hirmand/property-showcase";
@@ -59,11 +59,11 @@ function AreaPage() {
     <SiteChrome className="property-detail-shell">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(areaJsonLd(area)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(areaJsonLd(area)) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(crumbs) }}
       />
 
       <main className="property-detail">
