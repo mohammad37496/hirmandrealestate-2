@@ -16,6 +16,26 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    # Production-shaped means a real Postgres: the bundled preview server does
+    # not ship PGlite's WASM data files (it crashes on boot with them), and CI
+    # without a database reports "unconfigured" and fails every API smoke.
+    # A throwaway service keeps tests off any real database.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: hirmand_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/Postgres_db
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,16 +58,12 @@ jobs:
 
       - name: Browser smoke against production preview
         shell: bash
-        # One env shared by the app server AND the smoke script: the admin
-        # login fills HIRMAND_ADMIN_KEY from the smoke process's env, so both
-        # sides must agree, and the memory PGlite keeps CI off any real
-        # database. `vite preview` (not `vite dev`) is what serves the Nitro
-        # routes — /api/* and /sitemap.xml are build/preview-gated, so a dev
-        # server answers them with 404 and fails every API smoke.
+        # HIRMAND_ADMIN_KEY must reach BOTH processes: the smoke fills the
+        # admin login from its own env, so the server and the script have to
+        # agree on the key. DATABASE_URL comes from the job env (service
+        # Postgres above).
         env:
-          HIRMAND_E2E_DB: memory
           HIRMAND_ADMIN_KEY: ci-smoke-key
-          PGLITE_DATA_DIR: memory://
         run: |
           set -euo pipefail
           sudo mkdir -p /workspace
