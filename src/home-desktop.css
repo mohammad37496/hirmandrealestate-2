@@ -147,15 +147,17 @@
     margin-inline: auto;
     display: grid;
     grid-template-columns: minmax(0, 1.18fr) minmax(355px, .62fr);
-    gap: 52px;
-    align-items: center;
+    gap: 46px;
+    align-items: start;
     position: relative;
-    padding-block: 54px 74px;
+    padding-block: 42px 74px;
+    padding-inline: 0;
   }
 
   .hero-main-copy {
     min-width: 0;
-    padding-block: 30px;
+    max-width: 790px;
+    padding-block: 18px 0;
   }
 
   .hero-brand-line {
@@ -194,7 +196,7 @@
     max-width: 760px;
     margin: 0;
     color: #fff;
-    font-size: clamp(3rem, 4.8vw, 5.6rem);
+    font-size: clamp(2.85rem, 4.15vw, 4.9rem);
     line-height: 1.03;
     letter-spacing: -.045em;
     font-weight: 900;
@@ -349,12 +351,14 @@
     justify-self: end;
     width: 100%;
     max-width: 400px;
+    align-self: start;
+    margin-top: 24px;
     padding: 10px;
     border-radius: 28px;
     background: rgba(247,244,237,.94);
     border: 1px solid rgba(255,255,255,.30);
     box-shadow: 0 34px 90px rgba(0,0,0,.28);
-    transform: translateY(16px);
+    transform: none;
   }
 
   .hero-side-image {
