@@ -7,10 +7,12 @@ import { CallMenu } from "./call-menu";
 import { BrandLogo } from "./logo";
 import { scrollToId } from "./scroll";
 
+type ThemeMode = "nocturne" | "ivory" | "forest";
+
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<"nocturne" | "ivory" | "forest">("nocturne");
+  const [theme, setTheme] = useState<ThemeMode>("nocturne");
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const onHome = pathname === "/";
 
@@ -22,11 +24,33 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    const saved = window.localStorage.getItem("hirmand-theme");
+    const next: ThemeMode =
+      saved === "ivory" || saved === "forest" || saved === "nocturne" ? saved : "nocturne";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("hirmand-theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
     document.body.classList.toggle("menu-open", menuOpen);
     return () => document.body.classList.remove("menu-open");
   }, [menuOpen]);
 
-  const closeMenu = () => setMenuOpen(false);\n\n  const cycleTheme = () => {\n    setTheme((current) => (current === "nocturne" ? "ivory" : current === "ivory" ? "forest" : "nocturne"));\n  };\n\n  const themeLabel = theme === "nocturne" ? "تم شبانه" : theme === "ivory" ? "تم روشن" : "تم جنگلی";
+  const closeMenu = () => setMenuOpen(false);
+
+  const cycleTheme = () => {
+    setTheme((current) =>
+      current === "nocturne" ? "ivory" : current === "ivory" ? "forest" : "nocturne",
+    );
+  };
+
+  const themeLabel =
+    theme === "nocturne" ? "تم شبانه" : theme === "ivory" ? "تم روشن" : "تم جنگلی";
 
   function goHash(event: MouseEvent<HTMLAnchorElement>, id: string) {
     if (onHome) {
@@ -67,6 +91,17 @@ export function Header() {
         </nav>
 
         <div className="nav-actions">
+          <button
+            type="button"
+            className="theme-switcher"
+            onClick={cycleTheme}
+            aria-label={"تغییر تم؛ " + themeLabel}
+            title={"تغییر تم؛ " + themeLabel}
+          >
+            <Palette size={18} strokeWidth={1.8} aria-hidden="true" />
+            <span className="theme-switcher-label">{themeLabel}</span>
+          </button>
+
           <Link
             to="/"
             hash="inquiry"
@@ -78,7 +113,9 @@ export function Header() {
           >
             درخواست ملک
           </Link>
+
           <CallMenu className="nav-call-menu" buttonClassName="nav-call" align="end" />
+
           <button
             type="button"
             className="menu-toggle"
@@ -91,11 +128,7 @@ export function Header() {
         </div>
       </div>
 
-      <div
-        className={cn("mobile-menu", menuOpen && "is-open")}
-        aria-hidden={!menuOpen}
-        inert={!menuOpen}
-      >
+      <div className={cn("mobile-menu", menuOpen && "is-open")} aria-hidden={!menuOpen} inert={!menuOpen}>
         {NAV.map((item) =>
           item.to === "/properties" ? (
             <Link key={item.id} to="/properties" onClick={closeMenu}>
@@ -107,9 +140,19 @@ export function Header() {
             </Link>
           ),
         )}
+        <button type="button" className="theme-switcher mobile-theme-switcher" onClick={cycleTheme}>
+          <Palette size={17} strokeWidth={1.8} />
+          <span>{themeLabel}</span>
+          <small>تغییر</small>
+        </button>
         <div className="mobile-call-list">
           {TEAM.map((person) => (
-            <a key={person.id} className="mobile-call" href={`tel:${person.phone}`} onClick={closeMenu}>
+            <a
+              key={person.id}
+              className="mobile-call"
+              href={"tel:" + person.phone}
+              onClick={closeMenu}
+            >
               تماس با {person.name}
             </a>
           ))}
