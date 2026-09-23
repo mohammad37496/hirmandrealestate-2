@@ -166,119 +166,111 @@ function Hero() {
         <div className="hero-veil" />
       </div>
       <div className="hero-inner">
-        <BrandLogo size="hero" />
-        <p className="hero-kicker">{SITE.kicker}</p>
-        <h1>{SITE.nameFa}</h1>
-        <p className="english-name">{SITE.nameEn}</p>
-        <p className="hero-managed">{SITE.managedBy}</p>
-        <p className="slogan">
-          <strong>{SITE.sloganStrong}</strong>
-          <span>{SITE.sloganRest}</span>
-        </p>
-        <form className="hero-search" onSubmit={submit}>
-          <label className="sr-only" htmlFor="hero-deal">
-            نوع معامله
-          </label>
-          <select id="hero-deal" value={deal} onChange={(event) => setDeal(event.target.value)}>
-            {SERVICES.map((item) => (
-              <option key={item.id} value={item.title}>
-                {item.title}
-              </option>
-            ))}
-          </select>
-          <label className="sr-only" htmlFor="hero-type">
-            نوع ملک
-          </label>
-          <select
-            id="hero-type"
-            value={propertyType}
-            onChange={(event) => setPropertyType(event.target.value)}
-          >
-            <option value="">نوع ملک</option>
-            {PROPERTY_TYPES.map((item) => (
-              <option key={item.id} value={item.title}>
-                {item.title}
-              </option>
-            ))}
-          </select>
-          <label className="sr-only" htmlFor="hero-area">
-            محله
-          </label>
-          <select
-            id="hero-area"
-            value={neighborhood}
-            onChange={(event) => setNeighborhood(event.target.value)}
-          >
-            <option value="">محله در اصفهان</option>
-            {NEIGHBORHOODS.map((item) => (
-              <option key={item.name} value={item.name}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-          <button type="submit" className="btn-gold search-submit">
-            <Search size={16} />
-            جستجوی فایل
-          </button>
-        </form>
-        {/* One primary action, one secondary, one contact affordance.
-            The map shortcuts and the "services" anchor both duplicated
-            links that already live in the header and in the sections below,
-            so they were removed to give the first screen a clear hierarchy. */}
-        <div className="hero-actions">
-          <Link to="/properties" className="btn-gold">
-            مشاهده فایل‌ها
-          </Link>
-          <Link to="/" hash="inquiry" className="btn-ghost" onClick={(event) => scrollToId(event, "inquiry")}>
-            درخواست اختصاصی
-          </Link>
-          <CallMenu label="تماس با مشاور" />
-        </div>
-        <div className="hero-intents" aria-label="شروع سریع جست‌وجو">
-          <button
-            type="button"
-            className="hero-intent"
-            onClick={() => {
+        <div className="hero-main-copy">
+          <div className="hero-brand-line">
+            <BrandLogo size="hero" />
+            <span className="hero-eyebrow">املاک تخصصی اصفهان · از خانه تا سرمایه</span>
+          </div>
+          <p className="hero-kicker">{SITE.kicker}</p>
+          <h1>{SITE.nameFa}</h1>
+          <p className="english-name">{SITE.nameEn}</p>
+          <p className="hero-managed">{SITE.managedBy}</p>
+          <p className="slogan">
+            <strong>{SITE.sloganStrong}</strong>
+            <span>{SITE.sloganRest}</span>
+          </p>
+
+          <form className="hero-search" onSubmit={submit}>
+            <div className="hero-search-heading">
+              <span className="hero-search-label">جست‌وجوی سریع ملک</span>
+              <span className="hero-search-caption">خرید، فروش، رهن یا اجاره</span>
+            </div>
+            <label className="sr-only" htmlFor="hero-deal">نوع معامله</label>
+            <select id="hero-deal" value={deal} onChange={(event) => setDeal(event.target.value)}>
+              {SERVICES.map((item) => (
+                <option key={item.id} value={item.title}>{item.title}</option>
+              ))}
+            </select>
+            <label className="sr-only" htmlFor="hero-type">نوع ملک</label>
+            <select id="hero-type" value={propertyType} onChange={(event) => setPropertyType(event.target.value)}>
+              <option value="">نوع ملک</option>
+              {PROPERTY_TYPES.map((item) => (
+                <option key={item.id} value={item.title}>{item.title}</option>
+              ))}
+            </select>
+            <label className="sr-only" htmlFor="hero-area">محله</label>
+            <select id="hero-area" value={neighborhood} onChange={(event) => setNeighborhood(event.target.value)}>
+              <option value="">محله در اصفهان</option>
+              {NEIGHBORHOODS.map((item) => (
+                <option key={item.name} value={item.name}>{item.name}</option>
+              ))}
+            </select>
+            <button type="submit" className="btn-gold search-submit">
+              <Search size={17} />
+              جستجوی فایل
+            </button>
+          </form>
+
+          <div className="hero-actions">
+            <Link to="/properties" className="btn-gold">
+              مشاهده فایل‌ها
+            </Link>
+            <Link
+              to="/"
+              hash="inquiry"
+              className="btn-ghost"
+              onClick={(event) => scrollToId(event, "inquiry")}
+            >
+              درخواست اختصاصی
+            </Link>
+            <CallMenu label="تماس با مشاور" />
+          </div>
+
+          <div className="hero-intents" aria-label="شروع سریع جست‌وجو">
+            <button type="button" className="hero-intent" onClick={() => {
               setDeal("خرید");
               setPropertyType("آپارتمان");
               setNeighborhood("");
               window.location.assign("/properties?transaction=buy&type=apartment");
-            }}
-          >
-            خرید آپارتمان
-          </button>
-          <button
-            type="button"
-            className="hero-intent"
-            onClick={() => window.location.assign("/properties?transaction=mortgage&type=apartment")}
-          >
-            رهن آپارتمان
-          </button>
-          <button
-            type="button"
-            className="hero-intent"
-            onClick={() => window.location.assign("/properties?transaction=rent&type=apartment")}
-          >
-            اجاره آپارتمان
-          </button>
-          <button
-            type="button"
-            className="hero-intent"
-            onClick={() => window.location.assign("/properties?transaction=buy&type=villa")}
-          >
-            خرید ویلا و باغ
-          </button>
+            }}>خرید آپارتمان</button>
+            <button type="button" className="hero-intent" onClick={() => window.location.assign("/properties?transaction=mortgage&type=apartment")}>رهن آپارتمان</button>
+            <button type="button" className="hero-intent" onClick={() => window.location.assign("/properties?transaction=rent&type=apartment")}>اجاره آپارتمان</button>
+            <button type="button" className="hero-intent" onClick={() => window.location.assign("/properties?transaction=buy&type=villa")}>خرید ویلا و باغ</button>
+          </div>
+
+          <div className="hero-proof" aria-label="اطلاعات سریع هیرمند">
+            <span><strong>{NEIGHBORHOODS.length}+</strong> محله اصفهان</span>
+            <span><strong>{SERVICES.length}</strong> خدمت اصلی</span>
+            <span><strong>{TEAM.length}</strong> مشاور مستقیم</span>
+          </div>
         </div>
-        <div className="hero-proof" aria-label="اطلاعات سریع هیرمند">
-          <span><strong>{NEIGHBORHOODS.length}+</strong> محله اصفهان</span>
-          <span><strong>{SERVICES.length}</strong> خدمت اصلی</span>
-          <span><strong>{TEAM.length}</strong> مشاور مستقیم</span>
-        </div>
+
+        <aside className="hero-side-panel" aria-label="نمای کلی هیرمند">
+          <div className="hero-side-image">
+            <img src="/images/isfahan-arch.jpg" alt="نمایی از معماری اصفهان" loading="eager" decoding="async" />
+            <span className="hero-side-tag">اصفهان · هیرمند</span>
+          </div>
+          <div className="hero-side-body">
+            <div className="hero-side-kicker">انتخاب یک‌جا</div>
+            <h2>ملک مناسب را با اطلاعات روشن پیدا کنید.</h2>
+            <p>
+              از فایل‌های فعال و محله‌های اصفهان تا مشاوره مستقیم؛ مسیر تصمیم‌گیری را از یک صفحه شروع کنید.
+            </p>
+            <div className="hero-side-actions">
+              <Link to="/properties" className="hero-side-link">همه فایل‌ها <span>←</span></Link>
+              <Link to="/" hash="areas" className="hero-side-link" onClick={(event) => scrollToId(event, "areas")}>محله‌ها <span>←</span></Link>
+            </div>
+          </div>
+          <div className="hero-side-stats">
+            <div><strong>{NEIGHBORHOODS.length}+</strong><span>محله پوشش</span></div>
+            <div><strong>{TEAM.length}</strong><span>مشاور مستقیم</span></div>
+            <div><strong>۲۴/۷</strong><span>پیگیری درخواست</span></div>
+          </div>
+        </aside>
       </div>
     </section>
   );
 }
-
 function TrustStrip() {
   const highlights = [
     { value: `${NEIGHBORHOODS.length}+`, label: "محله روی نقشه" },
