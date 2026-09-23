@@ -1,0 +1,41 @@
+name: Copy source repository snapshot
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  copy-source:
+    if: ${{ !contains(github.event.head_commit.message, '[mirror-complete]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+        with:
+          repository: mohammad37496/Hirmand_real_Estate
+          ref: main
+          path: __source
+          fetch-depth: 1
+
+      - name: Copy source snapshot
+        run: |
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/workflows/copy-source.yml' \
+            __source/ ./
+          rm -rf __source
+
+      - name: Commit copied files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'chore: copy Hirmand Real Estate source snapshot [mirror-complete]' || exit 0
+          git push
