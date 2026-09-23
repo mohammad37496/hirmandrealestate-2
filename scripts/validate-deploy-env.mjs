@@ -27,14 +27,25 @@ if (runtime.url) {
   }
 } else if (isVercel) {
   const related = listDbRelatedEnvKeys();
-  console.warn(
-    "[deploy] WARNING: No database URL found (DATABASE_URL / POSTGRES_URL / …).",
-  );
+  const isProduction = (process.env.VERCEL_ENV || "").toLowerCase() === "production";
+  const message =
+    "[deploy] No database URL found (DATABASE_URL / POSTGRES_URL / …).";
+  if (isProduction) {
+    console.error(message);
+  } else {
+    console.warn(message);
+  }
   console.warn(
     related.length
       ? `[deploy] Related env keys: ${related.join(", ")}`
       : "[deploy] No DATABASE/POSTGRES/NEON env keys on this build.",
   );
+  if (isProduction && process.env.HIRMAND_ALLOW_UNCONFIGURED_PRODUCTION !== "true") {
+    console.error(
+      "[deploy] Production deployment blocked: configure DATABASE_URL (pooled PostgreSQL/Neon) before publishing.",
+    );
+    process.exit(1);
+  }
 } else {
   console.log("[deploy] Local build: no DATABASE_URL (PGLite fallback OK).");
 }
