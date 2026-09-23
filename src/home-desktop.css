@@ -1038,3 +1038,6 @@
   .hero-side-panel { z-index: 2; }
   .hero-brand-line { position: relative; z-index: 2; }
 }
+
+.hero-search-label { color: var(--fg, #101a2a) !important; }
+.hero-search-caption { color: var(--muted, #697383) !important; }
