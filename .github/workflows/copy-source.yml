@@ -30,6 +30,7 @@ jobs:
           rsync -a --delete \
             --exclude='.git/' \
             --exclude='.github/workflows/copy-source.yml' \
+            --exclude='__source/' \
             __source/ ./
           rm -rf __source
 
