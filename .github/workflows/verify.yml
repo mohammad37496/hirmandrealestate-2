@@ -44,7 +44,7 @@ jobs:
           sudo chown "$USER":"$USER" /workspace
 
           HIRMAND_E2E_DB=memory HIRMAND_ADMIN_KEY=ci-smoke-key PGLITE_DATA_DIR=memory:// \
-            node scripts/with-app-env.mjs vite dev --host 127.0.0.1 --port 8081 > /tmp/hirmand-preview.log 2>&1 &
+            node scripts/with-app-env.mjs node_modules/.bin/vite dev --host 127.0.0.1 --port 8081 > /tmp/hirmand-preview.log 2>&1 &
           PREVIEW_PID=$!
 
           cleanup() {
