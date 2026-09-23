@@ -43,7 +43,8 @@ jobs:
           sudo mkdir -p /workspace
           sudo chown "$USER":"$USER" /workspace
 
-          npx vite preview --host 127.0.0.1 --port 8081 > /tmp/hirmand-preview.log 2>&1 &
+          HIRMAND_E2E_DB=memory HIRMAND_ADMIN_KEY=ci-smoke-key PGLITE_DATA_DIR=memory:// \
+            npx vite preview --host 127.0.0.1 --port 8081 > /tmp/hirmand-preview.log 2>&1 &
           PREVIEW_PID=$!
 
           cleanup() {
