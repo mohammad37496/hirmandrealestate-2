@@ -36,15 +36,24 @@ jobs:
       - run: npm run lint
       - run: npm run build
 
-      - name: Browser smoke against production-shaped app server
+      - name: Browser smoke against production preview
         shell: bash
+        # One env shared by the app server AND the smoke script: the admin
+        # login fills HIRMAND_ADMIN_KEY from the smoke process's env, so both
+        # sides must agree, and the memory PGlite keeps CI off any real
+        # database. `vite preview` (not `vite dev`) is what serves the Nitro
+        # routes — /api/* and /sitemap.xml are build/preview-gated, so a dev
+        # server answers them with 404 and fails every API smoke.
+        env:
+          HIRMAND_E2E_DB: memory
+          HIRMAND_ADMIN_KEY: ci-smoke-key
+          PGLITE_DATA_DIR: memory://
         run: |
           set -euo pipefail
           sudo mkdir -p /workspace
           sudo chown "$USER":"$USER" /workspace
 
-          HIRMAND_E2E_DB=memory HIRMAND_ADMIN_KEY=ci-smoke-key PGLITE_DATA_DIR=memory:// \
-            node scripts/with-app-env.mjs node_modules/.bin/vite dev --host 127.0.0.1 --port 8081 > /tmp/hirmand-preview.log 2>&1 &
+          node scripts/with-app-env.mjs node_modules/.bin/vite preview --host 127.0.0.1 --port 8081 > /tmp/hirmand-preview.log 2>&1 &
           PREVIEW_PID=$!
 
           cleanup() {
@@ -65,11 +74,11 @@ jobs:
               break
             fi
             if ! kill -0 "$PREVIEW_PID" >/dev/null 2>&1; then
-              echo "::error::App server exited before becoming ready."
+              echo "::error::Preview server exited before becoming ready."
               exit 1
             fi
             if [ "$attempt" -eq 45 ]; then
-              echo "::error::App server did not become ready on port 8081."
+              echo "::error::Preview server did not become ready on port 8081."
               exit 1
             fi
             sleep 1
