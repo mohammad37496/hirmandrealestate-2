@@ -1125,13 +1125,25 @@ textarea {
 
 .property-detail-top {
   grid-template-columns: minmax(0, 1.55fr) minmax(360px, .85fr);
+  grid-template-areas: "gallery summary";
   gap: 18px;
-  align-items: stretch;
+  align-items: start;
+  direction: ltr;
 }
 
 .property-detail-top-gallery,
 .property-detail-summary {
   min-width: 0;
+}
+
+.property-detail-top-gallery {
+  grid-area: gallery;
+  direction: rtl;
+}
+
+.property-detail-summary {
+  grid-area: summary;
+  direction: rtl;
 }
 
 .property-detail-summary {
@@ -1486,6 +1498,7 @@ textarea {
 
   .property-detail-top {
     grid-template-columns: minmax(0, 1fr) minmax(320px, .78fr);
+    grid-template-areas: "gallery summary";
   }
 
   .property-gallery {
@@ -1516,6 +1529,9 @@ textarea {
 
   .property-detail-top {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "gallery"
+      "summary";
     gap: 13px;
   }
 
