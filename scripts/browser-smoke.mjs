@@ -258,9 +258,14 @@ try {
   }
 
   const seoRouteChecks = [];
-  for (const path of ["/robots.txt", "/sitemap.xml"]) {
-    const response = await browser.request.get(new URL(path, url).toString(), { timeout: timeoutMs });
-    seoRouteChecks.push({ path, status: response.status(), ok: response.ok() });
+  const seoPage = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  try {
+    for (const path of ["/robots.txt", "/sitemap.xml"]) {
+      const response = await seoPage.request.get(new URL(path, url).toString(), { timeout: timeoutMs });
+      seoRouteChecks.push({ path, status: response.status(), ok: response.ok() });
+    }
+  } finally {
+    await seoPage.close();
   }
 
   // When published listings exist, exercise a real card-to-detail navigation.
