@@ -12,7 +12,7 @@ export function isAllowedMediaRef(value: string): boolean {
   if (value.startsWith(DB_MEDIA_PATH) && value.length > DB_MEDIA_PATH.length) return true;
   try {
     const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
+    return url.protocol === "https:";
   } catch {
     return false;
   }
