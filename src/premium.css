@@ -1398,8 +1398,8 @@ textarea {
     linear-gradient(180deg, rgba(255,255,255,.022), transparent 34%),
     var(--detail-surface) !important;
   box-shadow:
-    0 16px 40px rgba(0,0,0,.16) !important,
-    inset 0 1px 0 rgba(255,255,255,.02);
+    0 16px 40px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.02) !important;
 }
 
 .property-divar-specs {
