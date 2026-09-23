@@ -1032,3 +1032,9 @@
     transition: none !important;
   }
 }
+
+@media (min-width: 1024px) {
+  .hero-main-copy { max-width: 760px; }
+  .hero-side-panel { z-index: 2; }
+  .hero-brand-line { position: relative; z-index: 2; }
+}
