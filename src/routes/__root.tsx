@@ -10,6 +10,7 @@ import themeProPagesCss from "../theme-pro-pages.css?url";
 import mobileCss from "../mobile.css?url";
 import refinementsCss from "../refinements.css?url";
 import uiClarityCss from "../ui-clarity.css?url";
+import themeStudioCss from "../theme-studio.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -42,6 +43,7 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: mobileCss },
       { rel: "stylesheet", href: refinementsCss },
       { rel: "stylesheet", href: uiClarityCss },
+      { rel: "stylesheet", href: themeStudioCss },
     ],
   }),
   component: RootDocument,
