@@ -402,70 +402,306 @@ h6 {
 }
 
 /* --------------------------------------------------------------------------
-   8. Footer — slate anchor with editorial top radius
+   8. Footer — the authoritative "Estate Editorial" dark anchor
+   --------------------------------------------------------------------------
+   The footer structure (footer-shell / footer-hero / footer-main-grid) is
+   laid out in theme-studio.css; this block re-skins every part onto the
+   slate + brass palette and wins the cascade over theme-studio, the legacy
+   base layers and home-desktop.css (which loads last) via !important where
+   those layers also fight back with !important.
    -------------------------------------------------------------------------- */
 .footer {
-  margin-top: 96px;
-  padding: 54px 0 20px;
-  border-top: 0;
+  width: 100% !important;
+  max-width: none !important;
+  margin-top: 112px !important;
+  padding: 0 !important;
+  text-align: start;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  border-top: 0 !important;
   border-radius: 28px 28px 0 0;
-  background: linear-gradient(180deg, var(--anchor), var(--anchor-deep));
-  color: rgb(226 230 236 / 68%);
+  color: rgb(226 230 236 / 74%) !important;
+  background:
+    radial-gradient(760px 300px at 86% 0%, rgb(192 138 42 / 15%), transparent 66%),
+    linear-gradient(180deg, var(--anchor) 0%, var(--anchor-deep) 100%) !important;
 }
 
-.footer h3 {
-  color: #f5f2ea;
+/* brass hairline along the rounded top edge */
+.footer::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(226 196 140 / 42%) 18%, rgb(226 196 140 / 42%) 82%, transparent);
 }
 
-.footer-brand p,
-.footer-managed {
-  color: rgb(226 230 236 / 62%);
+/* -- Brand hero ---------------------------------------------------------- */
+.footer .footer-brand-mark {
+  border-radius: 16px;
+  border-color: rgb(255 255 255 / 13%) !important;
+  background: rgb(255 255 255 / 7%) !important;
+  box-shadow: 0 16px 36px rgb(8 12 18 / 30%);
 }
 
-.footer-index {
+.footer .footer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .7rem;
+  letter-spacing: .02em;
+  color: var(--brass-300) !important;
+  border-color: rgb(226 196 140 / 34%) !important;
+  background: rgb(192 138 42 / 10%) !important;
+}
+
+.footer .footer-status::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #45c396;
+  box-shadow: 0 0 0 3px rgb(69 195 150 / 18%);
+}
+
+.footer .footer-index {
+  color: var(--brass-300) !important;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.footer .footer-brand-block h3 {
+  color: #f7f4ee !important;
+  letter-spacing: -.02em;
+}
+
+.footer .footer-managed {
+  color: rgb(226 196 140 / 88%) !important;
+}
+
+.footer .footer-brand-lede {
+  color: rgb(226 230 236 / 78%) !important;
+}
+
+.footer .footer-brand-points span {
+  font-size: .7rem;
+  color: rgb(226 230 236 / 70%) !important;
+  border-color: rgb(255 255 255 / 10%) !important;
+  background: rgb(255 255 255 / 5%) !important;
+}
+
+/* -- CTA card ------------------------------------------------------------ */
+.footer .footer-cta-card {
+  border-radius: 22px !important;
+  border-color: rgb(226 196 140 / 28%) !important;
+  background: linear-gradient(150deg, rgb(255 255 255 / 9%), rgb(255 255 255 / 3%)) !important;
+  box-shadow: 0 30px 80px rgb(6 10 15 / 40%);
+}
+
+.footer .footer-cta-icon {
   color: var(--brass-300);
+  border-color: rgb(226 196 140 / 32%) !important;
+  background: rgb(192 138 42 / 14%) !important;
 }
 
-.footer-label {
-  color: rgb(255 255 255 / 88%);
-}
-
-.footer-links a,
-.footer-contact > a,
-.footer-contact > span {
-  color: rgb(226 230 236 / 72%);
-  background: rgb(255 255 255 / 4%);
-  border-color: rgb(255 255 255 / 10%);
-}
-
-.footer-links a:hover {
-  color: #fff;
-  background: rgb(255 255 255 / 8%);
-  border-color: rgb(226 196 140 / 35%);
-}
-
-.footer-contact svg {
+.footer .footer-cta-eyebrow {
   color: var(--brass-300);
+  font-size: .7rem;
+  letter-spacing: .08em;
 }
 
-.footer-social-chip {
+.footer .footer-cta-card strong {
+  color: #f7f4ee !important;
+  font-size: 1.12rem;
+}
+
+.footer .footer-cta-primary {
+  border-radius: 12px !important;
+  font-size: .82rem;
+  letter-spacing: .01em;
+  color: #fffaf2 !important;
+  border-color: rgb(255 255 255 / 16%) !important;
+  background: linear-gradient(160deg, var(--brass-700), var(--brass-900)) !important;
+  box-shadow: 0 16px 32px rgb(138 94 20 / 36%);
+}
+
+.footer .footer-cta-primary:hover {
+  color: #fff !important;
+  background: linear-gradient(160deg, var(--brass-600), var(--brass-800)) !important;
+}
+
+.footer .footer-cta-phone {
+  border-radius: 12px !important;
+  font-size: .78rem;
+  color: rgb(247 245 240 / 94%) !important;
+  border-color: rgb(255 255 255 / 15%) !important;
+  background: rgb(255 255 255 / 5%) !important;
+}
+
+.footer .footer-cta-phone:hover {
+  color: #fff !important;
+  border-color: rgb(226 196 140 / 45%) !important;
+  background: rgb(192 138 42 / 13%) !important;
+}
+
+/* -- Divider + link / contact columns ------------------------------------ */
+.footer .footer-divider {
+  background: linear-gradient(90deg, transparent, rgb(226 196 140 / 36%) 16%, rgb(226 196 140 / 36%) 84%, transparent) !important;
+}
+
+.footer .footer-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f6f3ec !important;
+  font-size: .76rem !important;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.footer .footer-label::before {
+  content: "";
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brass-500), var(--brass-300));
+}
+
+.footer .footer-links-rich {
+  gap: 6px 10px !important;
+}
+
+.footer .footer-links-rich a {
+  min-height: 42px;
+  padding-inline: 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: rgb(226 230 236 / 78%) !important;
+  font-size: .8rem !important;
+  font-weight: 600;
+}
+
+.footer .footer-links-rich a::after {
+  content: "←";
+  margin-inline-start: auto;
+  padding-inline-start: 6px;
   color: var(--brass-300);
-  background: rgb(255 255 255 / 5%);
-  border-color: rgb(255 255 255 / 12%);
+  font-weight: 800;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity .18s ease, transform .18s ease;
 }
 
-.footer-social-chip:hover {
-  background: rgb(226 196 140 / 14%);
-  border-color: rgb(226 196 140 / 40%);
+.footer .footer-links-rich a:hover {
+  color: #fff !important;
+  background: rgb(255 255 255 / 7%) !important;
 }
 
-.footer-bottom {
-  border-top-color: rgb(255 255 255 / 9%);
-  color: rgb(226 230 236 / 46%);
+.footer .footer-links-rich a:hover::after {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-.footer-back-top {
+.footer .footer-contact-card {
+  border-radius: 16px !important;
+  border-color: rgb(255 255 255 / 10%) !important;
+  background: rgb(255 255 255 / 4%) !important;
+  color: rgb(226 230 236 / 82%) !important;
+}
+
+.footer .footer-contact-card:hover {
+  border-color: rgb(226 196 140 / 38%) !important;
+  background: rgb(192 138 42 / 9%) !important;
+  color: #fff !important;
+}
+
+.footer .footer-contact-icon {
   color: var(--brass-300);
+  border-color: rgb(226 196 140 / 28%) !important;
+  background: rgb(192 138 42 / 13%) !important;
+}
+
+.footer .footer-contact svg {
+  color: var(--brass-300) !important;
+}
+
+.footer .footer-contact-card small {
+  font-size: .7rem !important;
+  color: rgb(226 230 236 / 60%) !important;
+}
+
+.footer .footer-contact-card strong {
+  font-size: .8rem !important;
+  color: #f2f5f8 !important;
+}
+
+.footer .footer-social-caption {
+  font-size: .7rem !important;
+  letter-spacing: .05em;
+  color: rgb(226 230 236 / 62%) !important;
+}
+
+.footer .footer-social-chip {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 999px !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  background: rgb(255 255 255 / 5%) !important;
+  color: var(--brass-300) !important;
+}
+
+.footer .footer-social-chip:hover {
+  border-color: color-mix(in srgb, var(--social-brand, var(--brass-300)) 60%, transparent) !important;
+  background: rgb(255 255 255 / 9%) !important;
+  color: var(--social-brand, var(--brass-300)) !important;
+}
+
+/* -- Bottom bar ---------------------------------------------------------- */
+.footer .footer-bottom {
+  width: 100% !important;
+  font-size: .75rem !important;
+  color: rgb(226 230 236 / 58%) !important;
+  border-top-color: rgb(255 255 255 / 9%) !important;
+}
+
+.footer .footer-back-top {
+  font-size: .7rem;
+  color: var(--brass-300) !important;
+  border-color: rgb(226 196 140 / 34%) !important;
+  background: rgb(192 138 42 / 9%) !important;
+}
+
+.footer .footer-back-top:hover {
+  color: #fff !important;
+  border-color: rgb(226 196 140 / 48%) !important;
+  background: rgb(192 138 42 / 15%) !important;
+}
+
+@media (max-width: 720px) {
+  .footer {
+    margin-top: 80px !important;
+  }
+
+  .footer .footer-cta-card strong {
+    font-size: 1rem;
+  }
+
+  .footer .footer-label {
+    font-size: .74rem !important;
+  }
+
+  .footer .footer-links-rich a {
+    font-size: .78rem !important;
+  }
+
+  .footer .footer-contact-card strong {
+    font-size: .78rem !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
