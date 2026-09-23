@@ -37,7 +37,6 @@ import {
 import { CallMenu } from "./call-menu";
 import { FinanceTools } from "./finance-tools";
 import { InquiryForm, type InquiryDraft } from "./inquiry-form";
-import { BrandLogo } from "./logo";
 import { MapAppButtons, MapEmbed } from "./map-apps";
 import { PropertyShowcase } from "./property-showcase";
 import { BudgetMatcher } from "./budget-matcher";
@@ -162,6 +161,7 @@ function Hero() {
           alt=""
           decoding="async"
           fetchPriority="high"
+          sizes="100vw"
         />
         <div className="hero-veil" />
       </div>

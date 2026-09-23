@@ -13,6 +13,11 @@ import uiClarityCss from "../ui-clarity.css?url";
 import themeStudioCss from "../theme-studio.css?url";
 import themeRefinedCss from "../theme-refined.css?url";
 import homeDesktopCss from "../home-desktop.css?url";
+import premiumCss from "../premium.css?url";
+// Preload the headline weight actually used above the fold. The @font-face
+// src lives in the fontsource CSS with a hashed asset name, so we resolve it
+// at module time rather than guessing a URL.
+import vazirmatnBold from "@fontsource/vazirmatn/files/vazirmatn-arabic-700-normal.woff2?url";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -24,7 +29,8 @@ export const Route = createRootRoute({
       },
       { title: SITE.title },
       { name: "description", content: SITE.description },
-      { name: "theme-color", content: "#0b1a2b" },
+      { name: "theme-color", content: "#0d221b" },
+      { rel: "preconnect", href: "https://www.openstreetmap.org" },
       { name: "color-scheme", content: "light" },
       { name: "author", content: SITE.nameFa },
       { name: "referrer", content: "strict-origin-when-cross-origin" },
@@ -36,6 +42,13 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: vazirmatnBold,
+        crossOrigin: "anonymous" as const,
+      },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "stylesheet", href: appCss },
@@ -48,6 +61,7 @@ export const Route = createRootRoute({
       { rel: "stylesheet", href: themeStudioCss },
       { rel: "stylesheet", href: themeRefinedCss },
       { rel: "stylesheet", href: homeDesktopCss },
+      { rel: "stylesheet", href: premiumCss },
     ],
   }),
   component: RootDocument,

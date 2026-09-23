@@ -52,6 +52,8 @@ function PropertyImage({ src, alt, fallback }: { src: string; alt: string; fallb
     <img
       src={current}
       alt={alt}
+      width={640}
+      height={420}
       loading="lazy"
       decoding="async"
       referrerPolicy="no-referrer"
@@ -96,7 +98,7 @@ export function PropertyCard({ property }: { property: Property | PropertyCardDa
             <span>اصفهان، {property.neighborhood}</span>
           </span>
           <span className="property-card-arrow" aria-hidden="true">
-            <ChevronLeft size={16} />
+            <ChevronLeft size={16} className="rtl-flip" />
           </span>
         </div>
 

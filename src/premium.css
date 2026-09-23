@@ -1,0 +1,410 @@
+/* ==========================================================================
+   HIRMAND — premium final layer
+   --------------------------------------------------------------------------
+   Loaded LAST (after home-desktop.css) so it wins the cascade by source
+   order without sprinkling !important everywhere.
+
+   What this file does
+   -------------------
+   1. Converges the eight competing :root palettes (styles, theme-pro,
+      theme-studio, ui-clarity, theme-refined, home-desktop…) into ONE
+      restrained system: deep emerald structure, charcoal surfaces,
+      refined gold accents on warm paper.
+   2. Persian typography: no negative letter-spacing (breaks cursive
+      joining), Vazirmatn weight capped at its real 800, comfortable
+      line-heights, tabular Persian digits for figures.
+   3. RTL hardening: logical properties only in the patches below, fixed
+      detail-page reading order, bidi isolation for mixed digits.
+   4. Accessibility: visible focus ring, 44px touch targets, global
+      reduced-motion guard, sticky-summary safe position.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens — the single source of truth. Every legacy alias points here.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Structure — deep emerald (replaces navy/slate anchors) */
+  --emerald-950: #0b1f18;
+  --emerald-900: #0d221b;
+  --emerald-800: #123126;
+  --emerald-700: #1a4234;
+  --emerald-600: #255649;
+  --emerald-200: #c4d8cf;
+  --emerald-100: #e0ebe5;
+
+  /* Refined gold — accents, prices, links (AA on paper) */
+  --gold-800: #6e4f10;
+  --gold-700: #8a6414;
+  --gold-600: #a87e1f;
+  --gold-500: #c29a34;
+  --gold-300: #e6cd93;
+  --gold-100: #f8f0da;
+
+  /* Legacy palette aliases — converge navy/slate/bronze/v2-moss families */
+  --anchor: var(--emerald-800);
+  --anchor-2: var(--emerald-700);
+  --anchor-deep: var(--emerald-950);
+  --navy-950: var(--emerald-950);
+  --navy-900: var(--emerald-900);
+  --navy-800: var(--emerald-800);
+  --navy-700: var(--emerald-700);
+  --navy-600: var(--emerald-600);
+  --v2-moss: var(--emerald-700);
+  --v2-moss-2: var(--emerald-600);
+  --v2-dark: var(--emerald-900);
+  --v2-dark-2: var(--emerald-800);
+
+  --brass-800: var(--gold-800);
+  --brass-700: var(--gold-700);
+  --brass-600: var(--gold-600);
+  --brass-500: var(--gold-500);
+  --brass-300: var(--gold-300);
+  --brass-100: var(--gold-100);
+
+  /* home-desktop family */
+  --home-ink: #1c2b24;
+  --home-bronze: var(--gold-600);
+  --home-bronze-dark: var(--gold-800);
+  --home-line: rgb(28 43 36 / 12%);
+  --home-shadow: 0 24px 70px rgb(13 34 27 / 12%);
+
+  /* ui-clarity family */
+  --ui-ink: #1c2b24;
+  --ui-heading: #14231c;
+  --ui-accent: var(--emerald-800);
+  --ui-brass: var(--gold-700);
+  --ui-success: #1c7a56;
+
+  /* theme-studio family */
+  --v2-copper: var(--gold-600);
+  --v2-copper-2: var(--gold-700);
+
+  /* Legacy gold aliases */
+  --gold: var(--gold-700);
+  --gold-soft: var(--gold-500);
+  --gold-line: rgb(138 100 20 / 30%);
+}
+
+/* --------------------------------------------------------------------------
+   2. Dark surfaces — hero, footer, maps, tracking card become emerald-charcoal
+   -------------------------------------------------------------------------- */
+.hero {
+  background: var(--emerald-950);
+}
+
+.hero-veil {
+  background:
+    linear-gradient(90deg, rgb(7 19 15 / 93%) 0%, rgb(7 19 15 / 72%) 30%, rgb(7 19 15 / 42%) 58%, rgb(7 19 15 / 70%) 100%),
+    linear-gradient(180deg, rgb(7 19 15 / 22%), rgb(7 19 15 / 80%));
+}
+
+.footer {
+  background: var(--emerald-900);
+}
+
+.tracking-card {
+  background:
+    linear-gradient(135deg, rgb(194 154 52 / 12%), transparent 45%),
+    var(--emerald-800);
+}
+
+.area-map {
+  background: var(--emerald-900);
+}
+
+.site-home {
+  background:
+    radial-gradient(circle at 15% 18%, rgb(194 154 52 / 5%), transparent 22%),
+    radial-gradient(circle at 86% 46%, rgb(37 86 73 / 6%), transparent 23%),
+    #f4f1ea;
+}
+
+body {
+  background: #f4f1ea;
+}
+
+/* --------------------------------------------------------------------------
+   3. Persian typography — the critical pass
+   -------------------------------------------------------------------------- */
+
+/* Negative tracking smears Persian cursive joining. Kill it globally on
+   Persian headings; Latin-only display text may keep its own spacing. */
+h1,
+h2,
+h3,
+h4,
+.site-home .hero h1,
+.section-head h2,
+.hero-side-body h2,
+.property-detail-summary-head h1,
+.tools-title,
+.nav-brand strong {
+  letter-spacing: 0 !important;
+}
+
+/* Vazirmatn ships 100–800; 900 renders as synthesised smear. */
+.hero h1,
+.home-desktop-hero-title,
+.section-head h2,
+.hero-side-body h2,
+.tracking-card-copy h2,
+.faq-item summary,
+.footer h3 {
+  font-weight: 800;
+}
+
+/* Heading rhythm: Persian needs taller lines than Latin. These are paired
+   with specificity so they beat home-desktop.css's display-scale 1.03/1.2. */
+.hero h1,
+.home-desktop-hero-title,
+h1 {
+  line-height: 1.32;
+}
+
+.hero h1 {
+  letter-spacing: 0 !important; /* -.045em smears joined Persian glyphs */
+}
+
+.section-head h2,
+.hero-side-body h2,
+h2 {
+  line-height: 1.45;
+}
+
+h3,
+h4 {
+  line-height: 1.6;
+}
+
+/* Body copy floor for mobile comfort */
+p,
+li {
+  line-height: 1.9;
+}
+
+/* Figures: keep Persian digits evenly spaced, never stretch */
+.property-card-price,
+.property-price-block strong,
+.trust-stat strong,
+.hero-proof strong,
+.hero-side-stats strong,
+.stat-figure {
+  font-feature-settings: "ss02" on; /* Vazirmatn: circled/tabular digits */
+}
+
+/* Mixed-content bidi safety: phone numbers and Latin codes inside RTL text
+   must not re-order surrounding punctuation. */
+[dir="rtl"] .property-contact-phone,
+[dir="rtl"] .team-phone,
+[dir="rtl"] .footer-contact-card strong[dir="ltr"],
+[dir="rtl"] .property-card-code {
+  unicode-bidi: isolate;
+}
+
+/* The percent sign belongs on the visual left of Persian digits; keep the
+   whole token as one unit so "٪۲۰" never splits across lines. */
+.property-badge-discount,
+.budget-usage-percent {
+  unicode-bidi: isolate;
+}
+
+/* Chevron helpers — lucide chevrons are LTR glyphs; in RTL they must mirror
+   so "next" points toward the reading direction. */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* --------------------------------------------------------------------------
+   4. RTL / reading order
+   -------------------------------------------------------------------------- */
+
+/* styles.css forces .property-detail-top to LTR so the gallery sits left.
+   On a Persian site the summary (price + contact) should lead on the right;
+   restore RTL flow — the sticky summary becomes the second (left) column. */
+.property-detail-top {
+  direction: rtl;
+}
+
+/* Chevron direction: "next file" points toward the start edge in RTL.
+   lucide's ChevronLeft already renders correct RTL semantics here; ensure
+   any inline arrow glyphs inherit direction rather than flipping layout. */
+.hero-side-link span {
+  display: inline-block;
+}
+
+/* Form controls: keep placeholder/input text Persian-clean */
+select,
+input,
+textarea {
+  text-align: start;
+}
+
+/* --------------------------------------------------------------------------
+   5. Accessibility — focus, targets, motion
+   -------------------------------------------------------------------------- */
+
+:where(a, button, select, input, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--gold-600);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Minimum comfortable touch targets for compact controls */
+.hero-intent,
+.chip,
+.copy-btn,
+.team-social,
+.footer-social-chip {
+  min-height: 36px;
+  min-width: 36px;
+}
+
+@media (max-width: 767px) {
+  .hero-intent,
+  .chip,
+  .copy-btn,
+  .team-social,
+  .footer-social-chip,
+  .property-filter-button {
+    min-height: 44px;
+  }
+}
+
+/* One global reduced-motion guard — every layer's animations calm down */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Header / hero polish (desktop layer passes through tokens now)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  .site-nav {
+    background: rgb(11 31 24 / 20%);
+    border-bottom-color: rgb(255 255 255 / 14%);
+  }
+
+  .site-nav.is-scrolled {
+    background: rgb(250 248 243 / 97%);
+    box-shadow: 0 12px 36px rgb(13 34 27 / 9%);
+  }
+
+  .nav-links a::after {
+    background: var(--gold-500);
+  }
+
+  .header-inquiry {
+    color: #fff;
+    background: linear-gradient(135deg, var(--gold-600), var(--gold-800));
+    box-shadow: 0 10px 22px rgb(110 79 16 / 24%);
+  }
+
+  .hero {
+    min-height: min(88vh, 860px);
+  }
+
+  .hero-side-panel {
+    background: rgb(250 248 243 / 96%);
+    border-color: rgb(255 255 255 / 40%);
+  }
+
+  .hero-side-tag {
+    background: rgb(255 255 255 / 94%);
+    color: var(--home-ink);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Detail page — cohesive surfaces, sane sticky, readable titles
+   -------------------------------------------------------------------------- */
+.property-detail-summary {
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: var(--el-1);
+}
+
+.property-detail-page {
+  border-color: var(--line);
+}
+
+.property-breadcrumb {
+  color: var(--subtle);
+}
+
+/* ui-clarity clamps the detail H1 to 15ch, which forces awkward two-line
+   Persian titles; a wider measure reads naturally. */
+.property-detail-summary-head h1 {
+  max-width: 24ch !important;
+}
+
+/* Sticky summary must never collide with the fixed header */
+@media (min-width: 981px) {
+  .property-detail-summary {
+    top: 92px;
+    max-height: calc(100vh - 112px);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+}
+
+/* Gallery controls inherit the token system */
+.property-gallery-thumb.is-active {
+  border-color: var(--gold-600);
+}
+
+.property-lightbox {
+  background: rgb(7 19 15 / 94%);
+}
+
+/* --------------------------------------------------------------------------
+   8. Cards — one hover language, one border language
+   -------------------------------------------------------------------------- */
+.property-card,
+.type-card,
+.principle-card,
+.service-card,
+.step-card,
+.team-card,
+.location-card,
+.area-groups,
+.inquiry-section {
+  border-color: var(--line);
+}
+
+@media (min-width: 1024px) {
+  .property-card:hover,
+  .type-card:hover,
+  .team-card:hover,
+  .service-card:hover {
+    border-color: rgb(138 100 20 / 34%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Print: strip chrome, keep the listing facts
+   -------------------------------------------------------------------------- */
+@media print {
+  .site-nav,
+  .mobile-menu,
+  .footer,
+  .quick-actions,
+  .floating-call,
+  .music-player,
+  .property-contact-actions,
+  .property-card-actions,
+  .hero,
+  .trust-strip-wrap {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+}

@@ -144,6 +144,7 @@ export function propertyHead(property: Property | null, slug: string) {
     links: [
       { rel: "canonical", href: url },
       { rel: "alternate", hrefLang: "fa-IR", href: url },
+      { rel: "alternate", hrefLang: "x-default", href: url },
     ],
   };
 }
@@ -312,3 +313,18 @@ export function enhancedOrganizationJsonLd() {
 }
 
 export { TX_LABEL, TYPE_LABEL };
+
+/**
+ * Serialize JSON-LD for a <script type="application/ld+json"> tag.
+ *
+ * `<` must be escaped (U+2028/U+2029 too) so a description containing
+ * "</script>" — or any markup — can never terminate the script element from
+ * inside the JSON payload. JSON.stringify alone does not do this.
+ */
+export function jsonLdScript(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}

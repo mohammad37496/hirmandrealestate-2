@@ -13,16 +13,24 @@ import { VisitorTracker } from "./visitor-tracker";
 import { trackAnalyticsEvent } from "@/lib/analytics";
 import { SiteUtilities } from "./site-utilities";
 
+/**
+ * Shared site chrome — header, quick actions, footer, helpers.
+ * `skipTo` lets inner pages point the skip link at their own <main id>;
+ * without it a user skipping to "#top" lands before the content.
+ */
 export function SiteChrome({
   children,
   className,
+  skipTo,
 }: {
   children: ReactNode;
   className?: string;
+  /** DOM id of the page's <main>, e.g. "properties-main". */
+  skipTo?: string;
 }) {
   return (
     <>
-      <a className="skip-link" href="#top" onClick={(event) => scrollToId(event, "top")}>
+      <a className="skip-link" href={`#${skipTo ?? "top"}`} onClick={(event) => scrollToId(event, skipTo ?? "top")}>
         رفتن به محتوا
       </a>
       <Header />

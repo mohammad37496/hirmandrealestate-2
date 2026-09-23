@@ -9,6 +9,9 @@ export function BrandLogo({
   size?: LogoSize;
   className?: string;
 }) {
+  // The hero logo is the first brand mark on the homepage — load it eagerly;
+  // the rest (header/footer) can defer until needed.
+  const isHero = size === "hero";
   return (
     <img
       src="/images/hirmand-logo.png"
@@ -17,8 +20,8 @@ export function BrandLogo({
       height={1079}
       draggable={false}
       decoding="async"
-      loading={size === "hero" ? "eager" : "lazy"}
-      fetchPriority={size === "hero" ? "high" : "auto"}
+      loading={isHero ? "eager" : "lazy"}
+      fetchPriority={isHero ? "high" : "auto"}
       className={cn("brand-logo", `brand-logo-${size}`, className)}
     />
   );
