@@ -44,12 +44,15 @@ const isVercelRuntime =
  */
 const pgliteUsable =
   Boolean(process.env.PGLITE_DATA_DIR?.trim()) || process.env.NODE_ENV !== "production";
+const allowE2EPglite = process.env.HIRMAND_E2E_DB === "memory";
 
 export const dbSource: DbSource = databaseUrl
   ? "neon"
-  : isVercelRuntime || process.env.CI === "true" || !pgliteUsable
-    ? "unconfigured"
-    : "pglite";
+  : allowE2EPglite
+    ? "pglite"
+    : isVercelRuntime || process.env.CI === "true" || !pgliteUsable
+      ? "unconfigured"
+      : "pglite";
 
 export interface Sql {
   <T = Record<string, unknown>>(
